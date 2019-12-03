@@ -20,3 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('users', 'user_controller');
 
 Route::post('login', 'user_controller@login');
+
+
+Route::middleware(['Checkout'])->group(function(){
+
+    Route::apiResource('Category', 'CategoryController');
+
+});

@@ -18,7 +18,7 @@ class user_controller extends Controller
 
         if($user==NULL){
             return response()->json([
-                "message" => 'unauthorized'
+                "message" => 'Incorrect email or password'
             ],401);
         }
 
@@ -34,7 +34,7 @@ class user_controller extends Controller
         }
 
         return response()->json([
-            "message" => 'unauthorized'
+            "message" => 'Incorrect email or password'
         ],401);
     }
 
