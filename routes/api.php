@@ -25,5 +25,6 @@ Route::post('login', 'user_controller@login');
 Route::middleware(['Checkout'])->group(function(){
 
     Route::apiResource('Category', 'CategoryController');
+    Route::apiResource('Password', 'PasswordController');
 
 });

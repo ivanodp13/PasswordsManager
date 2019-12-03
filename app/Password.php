@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Password extends Model
 {
-    //
+    protected $filliable = ['title', 'password', 'category'];
 }
