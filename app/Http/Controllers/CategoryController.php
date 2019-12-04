@@ -42,10 +42,21 @@ class CategoryController extends Controller
         $token = new token();
         $decoded_email = $token->decode($request_token);
 
+
         $email = $decoded_email->email;
         $user_email = ['email' => $email];
 
         $user = User::where('email', '=', $user_email)->first();
+
+        $requested_category = Category::where('name', '=', $request->name)
+                ->where('user_id', '=', $user->id)
+                ->first();
+
+        if($requested_category != NULL){
+            return response()->json([
+                "message" => 'Error, ya tienes una categoría con ese nombre'
+            ],401);
+        }
 
         $category = new Category();
         $category->name = $request->name;

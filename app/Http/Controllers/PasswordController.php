@@ -7,6 +7,7 @@ use App\Category;
 use Firebase\JWT\JWT;
 use App\Helpers\Token;
 use App\Password;
+use App\User;
 
 class PasswordController extends Controller
 {
@@ -39,11 +40,30 @@ class PasswordController extends Controller
      */
     public function store(Request $request)
     {
+        $request_token = $request->header('Authorization');
+        $token = new token();
+        $decoded_email = $token->decode($request_token);
+
+        $email = $decoded_email->email;
+
+        $user_email = ['email' => $email];
+        $user = User::where('email', '=', $user_email)->first();
+        $user_id = $user->id;
+
+
+        $requested_category = Category::where('name', '=', $request->category)
+                ->where('user_id', '=', $user_id)
+                ->first();
+
+        if($requested_category == NULL){
+            return response()->json([
+                "message" => 'Error, esa categoría no existe, debes crearla primero'
+            ],401);
+        }
+
         $obtained_category = ['name' => $request->category];
 
         $category = Category::where($obtained_category)->first();
-        //$requested_category_id = $category->id;
-
 
         $password = new Password();
         $password->title = $request->title;
