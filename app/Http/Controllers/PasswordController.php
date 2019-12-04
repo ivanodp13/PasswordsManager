@@ -80,9 +80,27 @@ class PasswordController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
+        $request_token = $request->header('Authorization');
+        $token = new token();
+        $decoded_token = $token->decode($request_token);
 
+        $user_email = $decoded_token->email;
+        $user = User::where('email', '=', $user_email)->first();
+        $user_id = $user->id;
+
+        $requested_category = Category::where('user_id', '=', $user_id)->get();
+
+        //$categories_ids=$requested_category->id;
+
+
+
+        var_dump($requested_category);exit;
+
+        return response()->json([
+            $requested_category
+        ], 200);
     }
 
     /**
