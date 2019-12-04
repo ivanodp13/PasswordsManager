@@ -58,6 +58,7 @@ class CategoryController extends Controller
             ],401);
         }
 
+
         $category = new Category();
         $category->name = $request->name;
         $category->user_id = $user->id;
@@ -110,6 +111,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+
+        return response()->json([
+            "message" => 'Categoria y contrasñas eliminadas correctamente'
+        ],200);
     }
 }

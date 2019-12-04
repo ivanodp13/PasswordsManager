@@ -116,6 +116,11 @@ class PasswordController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $password = Password::find($id);
+        $password->delete();
+
+        return response()->json([
+            "message" => 'Contraseña eliminada correctamente'
+        ],200);
     }
 }

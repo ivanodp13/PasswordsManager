@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class User extends Model
 {
+    protected $table ='users';
     protected $filliable = ['name','email','password'];
 
-    public function register(Request $request)
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+
+
+    /*public function register(Request $request)
     {
         $user = new self();
         $user->name = $request->name;
@@ -33,5 +41,8 @@ class User extends Model
 
         return $email;
 
-    }
+    }*/
+
+
+
 }
