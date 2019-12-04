@@ -61,14 +61,12 @@ class PasswordController extends Controller
             ],401);
         }
 
-        $obtained_category = ['name' => $request->category];
-
-        $category = Category::where($obtained_category)->first();
+        $category_id_final = $requested_category->id;
 
         $password = new Password();
         $password->title = $request->title;
         $password->password = $request->password;
-        $password->category_id = $category->id;
+        $password->category_id = $category_id_final;
         $password->save();
 
         return response()->json([

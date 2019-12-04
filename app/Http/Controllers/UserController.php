@@ -66,6 +66,15 @@ class user_controller extends Controller
      */
     public function store(Request $request)
     {
+        $requested_email = ['email' => $request->email];
+        $email = User::where($requested_email)->first();
+
+        if($email!=NULL){
+            return response()->json([
+                "message" => 'Ya existe un usuario con ese email'
+            ],401);
+        }
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
