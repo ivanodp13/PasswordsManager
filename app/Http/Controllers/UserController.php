@@ -140,7 +140,13 @@ class user_controller extends Controller
 
         if($user_id!=$id){
             return response()->json([
-                "message" => 'Error, no puedes editar un usuario que no se a el tuyo'
+                "message" => 'Error, solo puedes editar tu usuario'
+            ],401);
+        }
+
+        if($request->name==NULL || $request->email==NULL || $request->password==NULL){
+            return response()->json([
+                "message" => 'Debes rellenar todos los campos'
             ],401);
         }
 

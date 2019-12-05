@@ -111,7 +111,37 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request_token = $request->header('Authorization');
+        $token = new token();
+        $decoded_token = $token->decode($request_token);
+
+        $user_email = $decoded_token->email;
+        $user = User::where('email', '=', $user_email)->first();
+
+        $user_id = $user->id;
+
+        $category = Category::where('id', '=', $id)->first();
+
+        $user_id_category = $category->user_id;
+
+        if($user_id!=$user_id_category){
+            return response()->json([
+                "message" => 'Solo puedes editar tus categorias'
+            ],401);
+        }
+
+        if($request->name==NULL){
+            return response()->json([
+                "message" => 'Debes rellenar todos los campos'
+            ],401);
+        }
+
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json([
+            "message" => 'Campos actualizados'
+        ],200);
     }
 
     /**
