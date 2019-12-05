@@ -88,7 +88,6 @@ class PasswordController extends Controller
 
         $user_email = $decoded_token->email;
         $user = User::where('email', '=', $user_email)->first();
-        $user_id = $user->id;
 
         //$requested_category = Category::where('user_id', '=', $user_id)->get();
 
@@ -120,7 +119,41 @@ class PasswordController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request_token = $request->header('Authorization');
+        $token = new token();
+        $decoded_token = $token->decode($request_token);
+
+        $user_email = $decoded_token->email;
+        $user = User::where('email', '=', $user_email)->first();
+
+        $user_id = $user->id;
+
+        $password = Password::where('id', '=', $id)->first();
+
+        $category_id_password = $password->category_id;
+        $category_from_password = Category::where('id', '=', $category_id_password)->first();
+
+        $user_from_category = $category_from_password->user_id;
+
+        if($user_id!=$user_from_category){
+            return response()->json([
+                "message" => 'Solo puedes editar tus contraseñas'
+            ],401);
+        }
+
+        if($request->title==NULL || $request->password==NULL){
+            return response()->json([
+                "message" => 'Debes rellenar todos los campos'
+            ],401);
+        }
+
+        $password->title = $request->title;
+        $password->password = $request->password;
+        $password->save();
+
+        return response()->json([
+            "message" => 'Campos actualizados'
+        ],200);
     }
 
     /**
