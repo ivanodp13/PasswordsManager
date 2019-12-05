@@ -15,6 +15,11 @@ class User extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function passwords()
+    {
+        return $this->hasManyThrough('App\Password','App\Category');
+    }
+
 
 
     /*public function register(Request $request)

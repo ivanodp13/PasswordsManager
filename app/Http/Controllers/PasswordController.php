@@ -90,16 +90,13 @@ class PasswordController extends Controller
         $user = User::where('email', '=', $user_email)->first();
         $user_id = $user->id;
 
-        $requested_category = Category::where('user_id', '=', $user_id)->get();
+        //$requested_category = Category::where('user_id', '=', $user_id)->get();
 
         //$categories_ids=$requested_category->id;
 
 
-
-        var_dump($requested_category);exit;
-
         return response()->json([
-            $requested_category
+            $user->passwords
         ], 200);
     }
 
