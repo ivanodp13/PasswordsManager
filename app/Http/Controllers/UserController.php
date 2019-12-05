@@ -130,7 +130,28 @@ class user_controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request_token = $request->header('Authorization');
+        $token = new token();
+        $decoded_token = $token->decode($request_token);
+
+        $user_email = $decoded_token->email;
+        $user = User::where('email', '=', $user_email)->first();
+        $user_id = $user->id;
+
+        if($user_id!=$id){
+            return response()->json([
+                "message" => 'Error, no puedes editar un usuario que no se a el tuyo'
+            ],401);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->save();
+
+        return response()->json([
+            "message" => 'Campos actualizados'
+        ],200);
     }
 
     /**
