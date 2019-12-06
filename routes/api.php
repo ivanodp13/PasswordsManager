@@ -28,5 +28,6 @@ Route::middleware(['Checkout'])->group(function(){
     Route::apiResource('Category', 'CategoryController');
     Route::apiResource('Password', 'PasswordController');
     Route::apiResource('users', 'user_controller');
+    Route::get('ShowUsers&Passwords', 'user_controller@showCategoriesAndPasswords');
 
 });
